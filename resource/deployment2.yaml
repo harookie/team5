@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: team5-app
+  namespace: default  # 필요한 경우 변경 가능
+spec:
+  replicas: 2  # 실행할 Pod 개수
+  selector:
+    matchLabels:
+      app: team5-app
+  template:
+    metadata:
+      labels:
+        app: team5-app
+    spec:
+      containers:
+        - name: team5-app
+          image: k8s-vga-master:5000/team5-app:latest  # 로컬 레지스트리 이미지 사용
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 18080  # Dockerfile에서 EXPOSE 18080이므로 18080으로 변경
+#      imagePullSecrets:
+#        - name: regcred  # 필요 없는 경우 삭제 가능
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: team5-app-service
+  namespace: default
+spec:
+  selector:
+    app: team5-app
+  ports:
+    - protocol: TCP
+      port: 18080          # 외부에서 접근하는 포트 (변경 가능)
+      targetPort: 18080  # 컨테이너 내부에서 서비스되는 포트 (Dockerfile EXPOSE 값과 동일해야 함)
+  type: NodePort
