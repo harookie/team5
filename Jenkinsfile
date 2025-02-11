@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/harookie/team5.git'
+                git branch: 'main', url: 'https://github.com/harookie/team5.git'
             }
         }
         stage('Build with Maven') {
