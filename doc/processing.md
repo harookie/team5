@@ -34,6 +34,11 @@ sudo usermod -aG docker jenkins
 sudo systemctl restart jenkins
 ```
 
+### mvn command 설치
+```
+sudo yum install maven
+```
+
 
 
 
