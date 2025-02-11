@@ -2,24 +2,31 @@ pipeline {
     agent any
     environment {
         REGISTRY = "k8s-vga-master:5000"
-        IMAGE_NAME = "my-app"
+        IMAGE_NAME = "team5-app"
         IMAGE_TAG = "latest"
         NAMESPACE = "team5"
     }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/harookie/team5.git'  // GitHub에서 코드 가져오기
+                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/harookie/team5.git'
             }
         }
-        stage('Build Image') {
+        stage('Build with Maven') {
+            steps {
+                script {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+        stage('Build Docker Image') {
             steps {
                 script {
                     sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
-        stage('Push Image') {
+        stage('Push Docker Image') {
             steps {
                 script {
                     sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
@@ -29,7 +36,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "kubectl set image deployment/my-app my-app=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} --namespace=${NAMESPACE}"
+                    sh "kubectl set image deployment/team5 team5=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} --namespace=${NAMESPACE}"
                 }
             }
         }
