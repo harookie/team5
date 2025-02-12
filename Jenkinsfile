@@ -1,10 +1,10 @@
 pipeline {
     agent any
     environment {
-        REGISTRY = "k8s-vga-master:5000"
+        REGISTRY = "k8s-vga-worker1:5000"
         IMAGE_NAME = "team5-app"
         IMAGE_TAG = "latest"
-        NAMESPACE = "team5"
+        NAMESPACE = "group1-team5"
     }
     stages {
         stage('Checkout') {

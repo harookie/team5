@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: team5-app
-  namespace: team5  # 필요한 경우 변경 가능
+  namespace: group1-team5  # 필요한 경우 변경 가능
 spec:
   replicas: 1  # 실행할 Pod 개수
   selector:
@@ -19,15 +19,16 @@ spec:
 #          image: team5-app:latest  # 로컬 레지스트리 이미지 사용
           imagePullPolicy: Always
           ports:
-            - containerPort: 18080  # Dockerfile에서 EXPOSE 18080이므로 18080으로 변경
+            - containerPort: 80  # Dockerfile에서 EXPOSE 18080이므로 18080으로 변경
 #      imagePullSecrets:
 #        - name: regcred  # 필요 없는 경우 삭제 가능
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: team5-app-service
-  namespace: team5
+  namespace: group1-team5
 spec:
   selector:
     app: team5-app
