@@ -15,4 +15,4 @@ COPY target/*.jar app.jar
 EXPOSE 18080
 
 # Run the jar file
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
